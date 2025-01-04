@@ -901,3 +901,50 @@ function arrayIntersection(arr1, arr2) {
 }
 
 console.log(arrayIntersection([1, 2, 3, 4], [3, 4, 5, 6])); // [3, 4]
+
+async function asyncTask(id) {
+  return new Promise(resolve => {
+    const delay = Math.random() * 1000; // Simulate random delay
+    setTimeout(() => {
+      console.log(`Task ${id} completed after ${delay.toFixed(2)}ms`);
+      resolve(`Result of Task ${id}`);
+    }, delay);
+  });
+}
+
+async function executeParallelWithoutPromiseAll(n) {
+  const tasks = [];
+  const results = [];
+
+  // Start all tasks
+  for (let i = 1; i <= n; i++) {
+    tasks.push(asyncTask(i));
+  }
+
+  // Collect results manually
+  for (const task of tasks) {
+    results.push(await task); // Wait for each task to resolve
+  }
+
+  console.log("All tasks completed in parallel:", results);
+}
+
+// Run 5 tasks in parallel
+executeParallelWithoutPromiseAll(5);
+
+async function executeSequentialWithoutPromiseAll(n) {
+  const results = [];
+
+  // Start each task one by one
+  for (let i = 1; i <= n; i++) {
+    const result = await asyncTask(i); // Wait for each task to complete
+    results.push(result);
+  }
+
+  console.log("All tasks completed in sequence:", results);
+}
+
+// Run 5 tasks sequentially
+executeSequentialWithoutPromiseAll(5);
+
+
