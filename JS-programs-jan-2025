@@ -1,0 +1,903 @@
+function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+// Example
+const log = debounce(() => console.log("Debounced!"), 300);
+log();
+log();
+setTimeout(log, 400); // Only one "Debounced!" after 300ms
+function memoize(fn) {
+  const cache = {};
+  return function (...args) {
+    const key = JSON.stringify(args);
+    if (!cache[key]) {
+      cache[key] = fn.apply(this, args);
+    }
+    return cache[key];
+  };
+}
+// Example
+const add = (a, b) => a + b;
+const memoizedAdd = memoize(add);
+console.log(memoizedAdd(1, 2)); // 3 (calculated)
+console.log(memoizedAdd(1, 2)); // 3 (cached)
+
+function sum(...args) {
+  // Accumulate the sum of the current arguments
+  let currentSum = args.reduce((acc, val) => acc + val, 0);
+
+  // Return a new function for chaining
+  function adder(...nextArgs) {
+    if (nextArgs.length === 0) {
+      // If no arguments are passed, return the accumulated sum
+      return currentSum;
+    }
+    // Otherwise, add the new arguments to the current sum
+    currentSum += nextArgs.reduce((acc, val) => acc + val, 0);
+    return adder;
+  }
+  return adder;
+}
+// Example Usage
+console.log(sum(2)(4)(6)()); // 12
+console.log(sum(3, 2)(5)()); // 10
+console.log(sum(4)(-10, -6)()); // -12
+console.log(sum(6, -3, 1)()); // 4
+function toggle(...options) {
+  let index = 0; // Keep track of the current index
+  return function () {
+    const value = options[index]; // Get the current value
+    index++; // Move to the next index
+    if (index >= options.length) {
+      index = 0; // Reset index to the start
+    }
+    return value;
+  };
+}
+
+// Example Usage
+var hello = toggle("hello");
+var onOff = toggle("on", "off");
+var speed = toggle("slow", "medium", "fast");
+
+console.log(hello()); // "hello"
+console.log(hello()); // "hello"
+
+console.log(onOff()); // "on"
+console.log(onOff()); // "off"
+console.log(onOff()); // "on"
+
+function mergeSimilarKeys(array) {
+  const map = {}; // Use an object to store the accumulated values
+
+  // Loop through the input array
+  for (let obj of array) {
+    if (map[obj.key]) {
+      map[obj.key] += obj.value; // Add to the existing value
+    } else {
+      map[obj.key] = obj.value; // Initialize with the current value
+    }
+  }
+
+  // Convert the map back into an array of objects
+  const result = [];
+  for (let key in map) {
+    result.push({ key, value: map[key] });
+  }
+
+  return result;
+}
+
+// Example Usage
+const input = [
+  { key: "A", value: 10 },
+  { key: "B", value: 20 },
+  { key: "A", value: 5 },
+  { key: "C", value: 15 },
+  { key: "B", value: 10 },
+];
+
+const output = mergeSimilarKeys(input);
+console.log(output);
+[
+  { key: "A", value: 15 },
+  { key: "B", value: 30 },
+  { key: "C", value: 15 },
+];
+
+function groupBy(array, key) {
+  const grouped = {}; // Object to hold grouped items
+
+  // Loop through the array
+  for (let item of array) {
+    const groupKey = item[key]; // Extract the group key
+
+    // Check if the group already exists, if not, create it
+    if (!grouped[groupKey]) {
+      grouped[groupKey] = [];
+    }
+
+    // Add the current item to the appropriate group
+    grouped[groupKey].push(item);
+  }
+
+  return grouped;
+}
+
+// Example Usage
+const input22 = [
+  { category: "fruit", name: "apple" },
+  { category: "fruit", name: "banana" },
+  { category: "vegetable", name: "carrot" },
+  { category: "fruit", name: "orange" },
+  { category: "vegetable", name: "spinach" },
+];
+
+const output22 = groupBy(input22, "category");
+console.log(output22);
+// const output = {
+//   fruit: [
+//     { category: "fruit", name: "apple" },
+//     { category: "fruit", name: "banana" },
+//     { category: "fruit", name: "orange" },
+//   ],
+//   vegetable: [
+//     { category: "vegetable", name: "carrot" },
+//     { category: "vegetable", name: "spinach" },
+//   ],
+// };
+
+function deepClone(obj) {
+  if (obj === null || typeof obj !== "object") return obj; // Handle non-objects and null
+  const clone = Array.isArray(obj) ? [] : {}; // Initialize as array or object
+  for (const key in obj) clone[key] = deepClone(obj[key]); // Recursively clone properties
+  return clone;
+}
+
+// Example Usage
+const original = {
+  name: "John",
+  details: {
+    hobbies: ["reading", "sports"],
+    address: { city: "New York", zip: 10001 },
+  },
+};
+
+const clone = deepClone(original);
+console.log(clone); // Deeply cloned object
+console.log(clone === original); // false
+console.log(clone.details === original.details); // false
+
+function removeDuplicates(array, key) {
+  const uniqueArray = [];
+
+  for (const item of array) {
+    // Check if the key value of the item already exists in uniqueArray
+    if (!uniqueArray.some((obj) => obj[key] === item[key])) {
+      uniqueArray.push(item); // Add the item to uniqueArray if not already present
+    }
+  }
+
+  return uniqueArray;
+}
+
+// Example Usage
+const input1 = [
+  { id: 1, name: "John" },
+  { id: 2, name: "Jane" },
+  { id: 1, name: "John" }, // Duplicate
+  { id: 3, name: "Alice" },
+];
+
+const output1 = removeDuplicates(input1, "id");
+console.log(output1);
+// const output1 = [
+//   { id: 1, name: "John" },
+//   { id: 2, name: "Jane" },
+//   { id: 3, name: "Alice" },
+// ];
+function removeDuplicates(array, key) {
+  const uniqueArray = [];
+  const seenKeys = new Set();
+  for (const item of array) {
+    if (!seenKeys.has(item[key])) {
+      seenKeys.add(item[key]);
+      uniqueArray.push(item);
+    }
+  }
+  return uniqueArray;
+}
+
+function flattenObject(obj, parentKey = "", result = {}) {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+      // If the value is an object and not an array, recursively flatten it
+      if (
+        typeof obj[key] === "object" &&
+        obj[key] !== null &&
+        !Array.isArray(obj[key])
+      ) {
+        flattenObject(obj[key], newKey, result);
+      } else {
+        // Otherwise, directly assign the value to the result object
+        result[newKey] = obj[key];
+      }
+    }
+  }
+  return result;
+}
+
+// Example Usage
+const nestedObj = {
+  id: 1,
+  user: {
+    name: "John",
+    details: {
+      age: 30,
+      address: {
+        city: "New York",
+        zip: "10001",
+      },
+    },
+  },
+  preferences: ["sports", "reading"],
+};
+
+const flatObj = flattenObject(nestedObj);
+console.log(flatObj);
+// {
+//   id: 1,
+//   "user.name": "John",
+//   "user.details.age": 30,
+//   "user.details.address.city": "New York",
+//   "user.details.address.zip": "10001",
+//   "preferences": ["sports", "reading"]
+// }
+
+// 👉 1) Using Objects
+const calculate = {
+  total: 0,
+  add: function (number) {
+    this.total += number;
+    return this;
+  },
+  multiply: function (number) {
+    this.total *= number;
+    return this;
+  },
+  divide: function (number) {
+    this.total /= number;
+    return this;
+  },
+  subtract: function (number) {
+    this.total -= number;
+    return this;
+  },
+};
+
+calculate.add(5).multiply(10).divide(5).subtract(5);
+console.log(calculate.total); // 5
+
+// 👇 we are forming closure and returning a new object from it
+const CalculatorFunc = function () {
+  return {
+    total: 0,
+    add: function (number) {
+      this.total += number;
+      return this;
+    },
+    multiply: function (number) {
+      this.total *= number;
+      return this;
+    },
+    divide: function (number) {
+      this.total /= number;
+      return this;
+    },
+    subtract: function (number) {
+      this.total -= number;
+      return this;
+    },
+    result: function () {
+      return this.total;
+    },
+  };
+};
+
+const result = CalculatorFunc()
+  .add(5)
+  .multiply(10)
+  .divide(5)
+  .subtract(5)
+  .result();
+console.log(result); // 5
+
+//Remove Duplicate characters from array of element using filter
+var myArray = ["a", 1, "a", 2, "1"];
+var unique = myArray.filter(
+  (value, index, arr) => arr.indexOf(value) === index
+);
+
+var reverseWords = function (s) {
+  let res = "";
+  let word = "";
+  for (let c of s) {
+    if (c === " ") {
+      res += word + c;
+      word = "";
+    } else {
+      word = c + word;
+    }
+  }
+  return res + word;
+};
+console.log(reverseWords("priya bagde"));
+
+function Reverse() {
+  var string = "India is my country";
+  var result = "";
+  for (var i = string.length - 1; i >= 0; i--) {
+    result = result + string[i];
+  }
+  return result;
+}
+console.log(Reverse());
+output = "yrtnuoc ym si aidnI";
+
+// Code 11: To check the string or number is palindrome or not( ex: 121,madam,anna) using reverse method
+function checkPalindrome() {
+  const string = "anmna";
+  let arr = string.split("").reverse().join("");
+  //console.log(arr)
+  if (string == arr) {
+    console.log("Palindrome");
+  } else {
+    console.log("Not Palindrome");
+  }
+}
+checkPalindrome();
+
+function longestWord() {
+  let string = "supriya is a hahahahaha good girl";
+  var arr = string.split(" ");
+  var longest = " ";
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].length > longest.length) {
+      longest = arr[i];
+    }
+  }
+  return longest;
+}
+console.log(longestWord());
+
+//Code 14: To find longest word from a string using functions
+function findLongestWord() {
+  var str = "Priya is a goog girl and having hardworking skill";
+  var longestWord = str.split(" ").sort((a, b) => {
+    return b.length - a.length;
+  }); //in desc order //from greater to smallest word
+  console.log(longestWord[0]);
+  console.log(longestWord[0].length);
+}
+findLongestWord();
+
+//To find vowels and its count in a given string
+function vowelCounts() {
+  vowels = ["a", "i", "e", "o", "u"];
+  var str = "priya";
+  count = 0;
+  for (var letter of str.toLowerCase()) {
+    if (vowels.includes(letter)) {
+      count++;
+      console.log(letter);
+    }
+  }
+  console.log(count);
+  return count;
+}
+vowelCounts();
+
+//Code 25: Fibonacci Series (0,1,1,2,3,5,8,13....) where keeping in array
+function listFibonacci(n) {
+  var arr = [0, 1];
+  for (var i = 1; i < n; i++) arr.push(arr[i] + arr[i - 1]);
+
+  return arr;
+}
+console.log(listFibonacci(4));
+
+//Code 34: Write a program that prints the numbers from 1 to 100. But for multiples of three, print "Fizz" instead of //the number, and for the multiples of five, print "Buzz".
+// For numbers which are multiples of both three and five, print "FizzBuzz"
+for (var i = 1; i <= 20; i++) {
+  if (i % 15 == 0) console.log("FizzBuzz");
+  else if (i % 3 == 0) console.log("Fizz");
+  else if (i % 5 == 0) console.log("Buzz");
+  else console.log(i);
+}
+
+//Code 35: Uppercase of each first letter of a words
+function upperCaseFirsstLetter() {
+  var string = "India is my country";
+  var words = string.toLowerCase().split(" ");
+  for (var i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].slice(1); //slice is used here to give all the letters except first letter.
+  }
+  return words.join(" ");
+}
+console.log(upperCaseFirsstLetter());
+
+//Code 45: Converting one dimensional array into n dimensional array using slice
+function chunkArrayInGroup(arr, size) {
+  var group = [];
+  while (arr.length > 0) {
+    group.push(arr.splice(0, size));
+  }
+  return group;
+}
+console.log(chunkArrayInGroup(["a", "b", "c", "d"], 2)); //[["a", "b"], ["c", "d"]]
+
+//Code 50: Checking all letters of second words should present in first word, in the same order using include function
+function characterPresent(arr) {
+  var first = arr[0].toLowerCase();
+  var second = arr[1].toLowerCase();
+  for (var letter of second) {
+    if (!first.includes(letter)) {
+      return false;
+    }
+  }
+  return true;
+}
+console.log(characterPresent(["hello", "hey"]));
+
+// Code 54: Unique values only from 2 arrays
+function diffArrayElement(arr1, arr2) {
+  var combine = arr1.concat(arr2);
+  return combine.filter((num) => {
+    if (arr1.indexOf(num) == -1 || arr2.indexOf(num) == -1) return num;
+  });
+}
+console.log(diffArrayElement([1, 2, 3, 4], [2, 3, 4, 5]))[(1, 5)];
+
+//code 72: Star Pattern
+for (var i = 1; i <= 5; i++) {
+  //use to create new row
+  for (var j = i; j <= 5; j++) {
+    //use to add in existing row
+    document.write("*");
+  }
+  document.write("<br/>");
+}
+// *****
+// ****
+// ***
+// **
+// *
+
+//code 78: Make alternate character to upper case
+function alternateText(str) {
+  var char = str.toLowerCase().split("");
+  for (var i = 0; i < char.length; i = i + 2) {
+    char[i] = char[i].toUpperCase();
+  }
+  return char.join("");
+}
+console.log(alternateText("Priya Bagde")); //"PrIyA BaGdE"
+
+//Code 87: sort by frequency of the letters
+function frequencySort(str) {
+  let map = {};
+  for (const letter of str) {
+    map[letter] = (map[letter] || 0) + 1; //to count the occurance
+  }
+  console.log(map); //{a: 2,A: 2,b: 3,B: 3,c: 1,C: 1}
+  let res = "";
+  let sorted = Object.keys(map).sort((a, b) => map[b] - map[a]);
+  console.log("sorted", sorted); // ["b", "B", "a", "A", "c", "C"]
+  for (let letter of sorted) {
+    for (let count = 0; count < map[letter]; count++) {
+      res += letter;
+      console.log(res);
+    }
+  }
+  return res;
+}
+console.log(frequencySort("cCaaAAbbbBBB")); //"bbbBBBaaAAcC"
+
+var moveZeroes = function (arr) {
+  for (var i = 0; i < arr.length - 1; i++) {
+    if (arr[i] === 0) {
+      arr.splice(i, 1);
+      arr.push(0);
+    }
+  }
+  return arr;
+};
+console.log(moveZeroes([1, 0, 4, 8, 6, 0, 8, 3, 39, 0]));
+
+function stringCompression(str) {
+  var output = "";
+  var count = 0;
+  for (var i = 0; i < str.length; i++) {
+    count++;
+    if (str[i] != str[i + 1]) {
+      output += str[i] + count;
+      count = 0;
+    }
+  }
+  console.log(output);
+}
+stringCompression("aaaab"); //a4b1
+
+//Find common elements:
+function commonElements(a, b) {
+  return a.filter((item) => b.includes(item));
+}
+A = [1.2, 3, 4, 5];
+B = [4, 5, 6, 7, 8];
+console.log(commonElements(A, B)); //[4,5]
+
+//sort:-
+const Data = [11, 44, 2, 66, 3, 7, 22, 3];
+const sorted = Data.sort((a, b) => {
+  if (a > b) return 1;
+  else return -1;
+});
+console.log(sorted); //prefer for object
+//a<b //[66,44,22,11,7,3,3,2]
+//a>b //[2,3,3,7,11,22,44,66]
+
+const sorted1 = Data.sort((a, b) => b - a);
+console.log(sorted1); //prefer for arrays
+//b-a //[66,44,22,11,7,3,3,2]
+//a-b //[2,3,3,7,11,22,44,66]
+
+function add(a) {
+  return function (b) {
+    if (b) return add(a + b);
+    return a;
+  };
+}
+console.log("Sum :", add(1)(2)(3)(4)(5)(6)(7)(8)()); //"Sum :", 36
+
+const sortArray = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] > arr[j]) {
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+  }
+  return arr;
+};
+console.log(sortArray([3, 1, 4, 1, 5])); // [1, 1, 3, 4, 5]
+
+const firstNonRepeating = (arr) => {
+  const map = {};
+  for (let num of arr) map[num] = (map[num] || 0) + 1;
+  return arr.find((num) => map[num] === 1);
+};
+console.log(firstNonRepeating([4, 5, 4, 5, 3])); // 3
+
+//Count Occurrences of Keys in an Array of Objects:
+const countKeys = (arr, key) =>
+  arr.reduce((acc, obj) => (obj[key] ? acc + 1 : acc), 0);
+console.log(countKeys([{ a: 1 }, { b: 2 }, { a: 3 }], "a")); // 2
+
+//Sort an Array of Objects by a Key
+const sortByKey = (arr, key) => arr.sort((a, b) => (a[key] > b[key] ? 1 : -1));
+console.log(sortByKey([{ age: 30 }, { age: 20 }], "age")); // [{ age: 20 }, { age: 30 }]
+
+const areAnagrams = (str1, str2) => {
+  if (str1.length !== str2.length) return false;
+
+  // Create frequency maps for both strings
+  const charCount1 = {};
+  const charCount2 = {};
+
+  // Count characters in str1
+  for (let i = 0; i < str1.length; i++) {
+    const char = str1[i];
+    charCount1[char] = (charCount1[char] || 0) + 1;
+  }
+
+  // Count characters in str2
+  for (let i = 0; i < str2.length; i++) {
+    const char = str2[i];
+    charCount2[char] = (charCount2[char] || 0) + 1;
+  }
+
+  // Compare frequency maps
+  for (let char in charCount1) {
+    if (charCount1[char] !== charCount2[char]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+// Test the function
+console.log(areAnagrams("listen", "silent")); // true
+console.log(areAnagrams("hello", "world")); // false
+
+// Using caching to prevent redundant API calls
+const fetchData = (() => {
+  const cache = new Map();
+
+  return async function (url) {
+    if (cache.has(url)) {
+      return cache.get(url);
+    }
+    const response = await fetch(url);
+    const data = await response.json();
+    cache.set(url, data);
+    return data;
+  };
+})();
+const userScores = { alice: 50, bob: 75, charlie: 85 };
+
+// Convert Object to Array of Objects
+const result1 = Object.keys(userScores).map((key) => ({
+  name: key,
+  score: userScores[key],
+}));
+
+console.log(result1);
+/* Output:
+[
+  { name: 'alice', score: 50 },
+  { name: 'bob', score: 75 },
+  { name: 'charlie', score: 85 }
+]
+*/
+
+const productPrices = { apple: 1, banana: 0.5, cherry: 2 };
+const filteredProducts = Object.keys(productPrices)
+  .filter((key) => productPrices[key] > 1)
+  .map((key) => ({ product: key, price: productPrices[key] }));
+
+console.log(filteredProducts);
+/* Output:
+[
+  { product: 'cherry', price: 2 }
+]
+*/
+
+// Flatten an Object with Nested Objects
+const nestedObject = {
+  user: { name: "John", age: 30 },
+  address: { city: "New York", zip: "10001" },
+};
+
+const flatObject = Object.keys(nestedObject)
+  .map((key) => {
+    const nestedKeys = Object.keys(nestedObject[key]);
+    return nestedKeys.map((nestedKey) => ({
+      [`${key}_${nestedKey}`]: nestedObject[key][nestedKey],
+    }));
+  })
+  .flat();
+
+console.log(flatObject);
+/* Output:
+[
+  { user_name: 'John' },
+  { user_age: 30 },
+  { address_city: 'New York' },
+  { address_zip: '10001' }
+]
+*/
+const items = { a: "apple", b: "banana", c: "apple", d: "cherry" };
+
+const frequency = Object.keys(items)
+  .map((key) => items[key])
+  .reduce((acc, item) => {
+    acc[item] = (acc[item] || 0) + 1;
+    return acc;
+  }, {});
+console.log(frequency); // Output: { apple: 2, banana: 1, cherry: 1 }
+// Get Length of Each String in an Object
+const userNames = { user1: "Alice", user2: "Bob", user3: "Charlie" };
+const nameLengths = Object.keys(userNames).map((key) => ({
+  [key]: userNames[key].length,
+}));
+
+console.log(nameLengths);
+// Output: [{ user1: 5 }, { user2: 3 }, { user3: 7 }]
+
+// Convert Object to Array of Key-Value Strings
+
+const person = { name: "John", age: 30, city: "New York" };
+const keyValuePairs = Object.keys(person).map((key) => `${key}=${person[key]}`);
+console.log(keyValuePairs);
+// Output: ['name=John', 'age=30', 'city=New York']
+
+// Swap Keys and Values of an Object
+const colors = { red: "apple", green: "kiwi", blue: "blueberry" };
+const swapped = Object.keys(colors).map((key) => ({
+  [colors[key]]: key,
+}));
+
+console.log(swapped);
+// Output: [{ apple: 'red' }, { kiwi: 'green' }, { blueberry: 'blue' }]
+
+// Combine Two Objects with Transformation
+const obj1 = { a: 1, b: 2 };
+const obj2 = { b: 3, c: 4 };
+const mergedObj = Object.fromEntries(
+  Object.entries({ ...obj1, ...obj2 }).map(([key, value]) => [key, value * 2])
+);
+console.log(mergedObj); // Output: { a: 2, b: 6, c: 8 }
+// Filter by Value Type
+const obj = { a: 1, b: "hello", c: true, d: 42 };
+const numericEntries = Object.fromEntries(
+  Object.entries(obj).filter(([key, value]) => typeof value === "number")
+);
+console.log(numericEntries); // Output: { a: 1, d: 42 }
+
+//Implement Deep Flatten for Arrays, Objects, and Primitives
+function deepFlatten(input) {
+  const result = [];
+  const flatten = (value) => {
+    if (Array.isArray(value)) {
+      value.forEach(flatten);
+    } else if (value && typeof value === "object") {
+      Object.values(value).forEach(flatten);
+    } else {
+      result.push(value);
+    }
+  };
+  flatten(input);
+  return result;
+}
+
+// Example usage
+console.log(deepFlatten([1, [2, { a: 3, b: [4, 5] }], 6])); // Output: [1, 2, 3, 4, 5, 6]
+
+function lcp(strings) {
+  if (!strings.length) return ""; // Return empty string if array is empty
+
+  // Sort the array to bring similar prefixes closer
+  strings.sort(); //
+
+  // Compare the first and last strings in the sorted array
+  let first = strings[0];
+  let last = strings[strings.length - 1];
+  let i = 0;
+
+  // Find the common prefix between the first and last strings
+  while (i < first.length && first[i] === last[i]) {
+    i++;
+  }
+
+  return first.slice(0, i);
+}
+
+// Test cases
+console.log(lcp(["saiteja", "saviour", "saas"])); // Output: 'sa'
+console.log(lcp(["racedog", "car", "racecar"])); // Output: ''
+
+//Memoize/Cache Identical API Requests
+function memoizeAsync(fn) {
+  const cache = new Map();
+  return async function (...args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+    const result = await fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+}
+
+// Example usage
+const fetchAPI = memoizeAsync((url) => fetch(url).then((res) => res.json()));
+
+//Implement Custom Object.assign
+function customAssign(target, ...sources) {
+  sources.forEach((source) => {
+    if (source) {
+      Object.keys(source).forEach((key) => {
+        target[key] = source[key];
+      });
+    }
+  });
+  return target;
+}
+
+// Example usage
+console.log(customAssign({}, { a: 1 }, { b: 2 })); // Output: { a: 1, b: 2 }
+
+function firstNonRepeatingChar(str) {
+  const charCount = {};
+
+  for (const char of str) {
+    charCount[char] = (charCount[char] || 0) + 1;
+  }
+
+  for (const char of str) {
+    if (charCount[char] === 1) {
+      return char;
+    }
+  }
+
+  return null;
+}
+
+console.log(firstNonRepeatingChar("swiss")); // "w"
+console.log(firstNonRepeatingChar("hello")); // "h"
+
+function countVowels(str) {
+  const vowels = "aeiouAEIOU";
+  let count = 0;
+
+  for (const char of str) {
+    if (vowels.includes(char)) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+console.log(countVowels("hello")); // 2
+console.log(countVowels("world")); // 1
+
+function mostFrequentChar(str) {
+  const charCount = {};
+  let maxChar = "";
+  let maxCount = 0;
+
+  for (const char of str) {
+    charCount[char] = (charCount[char] || 0) + 1;
+    if (charCount[char] > maxCount) {
+      maxCount = charCount[char];
+      maxChar = char;
+    }
+  }
+
+  return maxChar;
+}
+
+console.log(mostFrequentChar("javascript")); // "a"
+console.log(mostFrequentChar("hello")); // "l"
+
+function removeDuplicates(str) {
+  const seen = new Set();
+  let result = "";
+
+  for (const char of str) {
+    if (!seen.has(char)) {
+      seen.add(char);
+      result += char;
+    }
+  }
+
+  return result;
+}
+
+console.log(removeDuplicates("hello")); // "helo"
+console.log(removeDuplicates("javascript")); // "javscript"
+
+function findMissingNumber(arr) {
+  const n = arr.length + 1;
+  const expectedSum = (n * (n + 1)) / 2;
+  const actualSum = arr.reduce((sum, num) => sum + num, 0);
+  return expectedSum - actualSum;
+}
+
+console.log(findMissingNumber([1, 2, 4, 5, 6])); // 3
+
+function arrayIntersection(arr1, arr2) {
+  const set1 = new Set(arr1);
+  const set2 = new Set(arr2);
+  const intersection = [...set1].filter((item) => set2.has(item));
+  return intersection;
+}
+
+console.log(arrayIntersection([1, 2, 3, 4], [3, 4, 5, 6])); // [3, 4]
