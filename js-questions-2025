@@ -1,0 +1,86 @@
+Core JavaScript
+Closures: Implement a createCounter function using closures.
+Memoization: Write a memoize function to cache expensive function results.
+Polyfills: Implement a polyfill for Array.prototype.map, Array.prototype.reduce, and Function.prototype.bind.
+Asynchronous Programming: Write a fetchWithRetry function with retries on failure.
+PromiseAll: Implement a promiseAll function similar to Promise.all.
+Debounce: Implement a debounce function for optimizing input-heavy UI elements.
+Event Loop: Explain and simulate the output of a given event loop scenario.
+
+Objects
+Deep Cloning: Implement a deep clone function for a nested object.
+Flattening Objects: Flatten a deeply nested object into a single-level object.
+Frequency Count: Count the frequency of characters or elements in an array or string.
+
+Arrays
+Array Rotation: Rotate an array by k positions.
+Max Subarray Sum: Find the maximum sum of a subarray using Kadane’s Algorithm.
+Two-Pointer: Find all pairs in an array that sum up to a specific target.
+Sort 0s, 1s, 2s: Sort an array of 0s, 1s, and 2s without extra space.
+Sliding Window: Find the longest substring without repeating characters.
+Max Subarray Sum (k): Find the maximum sum of a subarray of size k.
+
+Strings
+Anagram Check: Check if a string is a valid anagram of another string.
+First Non-Repeating Character: Find the first non-repeating character in a string.
+Longest Palindromic Substring: Find the longest palindromic substring.
+Rearranged Palindrome: Check if a string can be rearranged into a palindrome.
+
+Practical Applications
+Pagination: Write a function to paginate an array based on page number and size.
+Debouncing: Implement a debounce function to optimize search inputs.
+Throttling: Implement a throttle function to limit API calls.
+
+Miscellaneous
+DOM Serialization: Serialize and deserialize a DOM tree structure.
+Event Delegation: Handle clicks on dynamically added list items using event delegation.
+LRU Cache: Implement an LRU (Least Recently Used) Cache using JavaScript Map.
+Custom Promise: Create a custom Promise class with then, catch, and resolve.
+Module Bundler: Write a dependency graph resolver for JavaScript modules.
+
+Bonus Tips for Interview Success:
+Basic Questions:
+
+1Reverse a String
+2Check for Palindrome
+3FizzBuzz: print numbers 1 to 100 replacing the multiples of 3 with fizz, multiples of 5 with buzz and multiples of both with fizzbuzz
+4Find Factorial
+5Find the Largest Number in an Array
+6Count the Occurrences of Characters in a String
+7Sort an Array Without Using .sort()
+8 Remove Duplicates from an Array
+
+ Intermediate Questions:
+
+9Longest Substring Without Repeating Characters
+ Flatten a Nested Array
+1Debounce Function
+1Throttle Function
+1Merge Two Sorted Arrays into a single sorted array
+1Find the Intersection of Two Arrays
+ Rotate an Array by K Steps
+1Check if a String Contains Balanced Parentheses
+1Group Anagrams from an Array of Strings
+
+Advanced Questions:
+
+1Deep Clone an Object
+1 Check if Two Strings Are Anagrams
+2Find the First Non-Repeating Character
+2 Find smallest Missing Number in an Array (1 to N)
+2 Implement a Custom Promise
+2Event Emitter Implementation (on, off, emit)
+2Generate All Permutations of a String
+2 Find the Kth Largest Element in an Array
+2Find the Maximum Profit from Stock Prices
+2 Implement Memoization in JavaScript
+2Serialize and Deserialize a Binary Tree
+2Write a Polyfill for Array.prototype.map()
+3 Write a Polyfill for Promise.all()
+3 Implement LRU cache
+
+Break down the problem before coding.
+Optimize solutions for time and space complexity.
+Focus on writing clean, maintainable code.
+
+
