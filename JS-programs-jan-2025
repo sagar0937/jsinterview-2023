@@ -957,4 +957,31 @@ const strs = ["eat", "tea", "tan", "ate", "nat", "bat"];
 console.log(groupAnagrams(strs));
 // Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
 
+function isBalancedParentheses(str) {
+  const stack = [];
+  const pairs = {
+    ')': '(',
+    '}': '{',
+    ']': '[',
+  };
+
+  for (const char of str) {
+    if (['(', '{', '['].includes(char)) {
+      stack.push(char); // Push opening brackets
+    } else if ([')', '}', ']'].includes(char)) {
+      if (stack.length === 0 || stack.pop() !== pairs[char]) {
+        return false; // Unmatched closing bracket or empty stack
+      }
+    }
+  }
+
+  return stack.length === 0; // Stack should be empty if balanced
+}
+
+// Examples
+console.log(isBalancedParentheses("(a + b)"));         // true
+console.log(isBalancedParentheses("{[()]}"));          // true
+console.log(isBalancedParentheses("(a + b]"));         // false
+console.log(isBalancedParentheses("(a + [b - c)]"));   // false
+console.log(isBalancedParentheses("a + b"));           // true (no parentheses)
 
