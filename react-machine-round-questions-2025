@@ -1,0 +1,85 @@
+Here are the **top 15 React.js interview coding challenges**:
+
+1. **Todo List Application**: Build a basic todo list where users can add, remove, and mark tasks as complete or incomplete.
+   
+2. **Counter App**: Create a counter app with buttons to increment, decrement, and reset the count.
+
+3. **Accordion Component**: Implement an accordion component where only one section can be expanded at a time.
+
+4. **Search Filter**: Create a searchable list that filters results as the user types into a search input.
+
+5. **Weather App**: Build a weather app that fetches data from an API and displays the weather based on the user's input (e.g., city name).
+
+6. **Modal Popup**: Create a modal that appears when a button is clicked and can be closed by clicking outside or a close button.
+
+7. **Form Validation**: Create a form with multiple fields (name, email, password) and implement basic validation (e.g., required fields, email format).
+
+8. **Infinite Scroll**: Build a list that loads more items as the user scrolls to the bottom (e.g., infinite scrolling).
+
+9. **Timer/Stopwatch**: Implement a timer or stopwatch with start, stop, and reset functionalities.
+
+10. **Pagination**: Implement pagination for a list of items fetched from an API, displaying a specific number of items per page.
+
+11. **Drag and Drop List**: Create a list of items that the user can rearrange using drag-and-drop.
+
+12. **Tab Component**: Implement a tabbed interface where only the content of the selected tab is displayed.
+
+13. **E-commerce Cart**: Build a shopping cart interface where users can add, remove, and adjust quantities of items, displaying the total cost.
+
+14. **Image Carousel**: Create an image slider or carousel that automatically transitions or allows manual navigation between images.
+
+15. **Dark/Light Mode Toggle**: Implement a button to toggle between dark and light themes for a website, saving the user's preference in local storage.
+
+These challenges test various React skills like state management, event handling, component creation, API integration, and user interaction.
+
+16. **Star Rating Component**: Build a star rating component where users can rate an item by clicking on stars (e.g., out of 5 stars).
+
+17. **Autocomplete Dropdown**: Create an autocomplete input that suggests options from a list as the user types.
+
+18. **Debounced Search Input**: Implement a search input that debounces user input, waiting for a pause before making an API call to fetch results.
+
+19. **Nested Comments Section**: Build a comment system where users can reply to comments, creating nested threads of discussion.
+
+20. **Password Strength Indicator**: Implement a password input with a real-time strength indicator based on the complexity of the password entered.
+
+21. **Responsive Navbar**: Create a responsive navigation bar that collapses into a hamburger menu on smaller screens.
+
+22. **Multi-Step Form**: Build a form split into multiple steps, with the ability to move back and forth between steps, and validate each step's input.
+
+23. **File Upload with Preview**: Implement a file upload component where users can upload an image and see a preview before submitting it.
+
+24. **Context API with Theme Switcher**: Use React Context to build a global state that allows switching themes (e.g., dark mode) across different components.
+
+25. **Dynamic Form Fields**: Create a form where users can dynamically add or remove form fields (e.g., add multiple email addresses).
+
+26. **Real-time Chat App**: Build a basic chat application that updates in real-time when messages are sent, simulating instant communication.
+
+27. **Progress Bar**: Implement a progress bar that fills up based on user actions or file upload progress.
+
+28. **Calendar Component**: Build a calendar component that allows users to select dates and display events on specific dates.
+
+29. **Data Sorting Table**: Create a table component where users can sort columns (e.g., by name, date, or price) by clicking the column header.
+
+30. **Hover Tooltip**: Implement a tooltip that appears when hovering over a specific element, displaying more information about that element.
+
+31. **Notification System**: Build a notification system that shows alerts/messages and can be dismissed by the user after a certain time.
+
+32. **Collapsible Sidebar**: Create a collapsible sidebar menu that can expand and collapse based on user interaction.
+
+33. **Image Lazy Loading**: Implement lazy loading of images so that only images in the viewport are loaded, improving performance.
+
+34. **Scroll to Top Button**: Build a "scroll to top" button that appears when the user scrolls down the page and smoothly scrolls back to the top when clicked.
+
+35. **Formik + Yup Form Validation**: Use Formik and Yup libraries to build a complex form with advanced validation rules.
+
+36. **CRUD Operations with REST API**: Build a basic app to perform CRUD (Create, Read, Update, Delete) operations on a list of items fetched from an external API.
+
+37. **UseEffect Fetching API**: Create a component that fetches data from an API when it loads, and display the data in the component.
+
+38. **Sticky Header on Scroll**: Implement a header that sticks to the top of the page when the user scrolls past it.
+
+39. **Voting System**: Build a voting system where users can upvote or downvote items (e.g., similar to Reddit or Stack Overflow voting).
+
+40. **Responsive Grid Layout**: Build a grid layout that adjusts the number of columns based on screen size.
+
+These challenges cover a wide range of skills in React, including working with forms, UI components, performance optimization, and API integration. They’re great for testing the depth of React knowledge and handling various user interactions.
