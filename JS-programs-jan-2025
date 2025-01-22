@@ -985,3 +985,32 @@ console.log(isBalancedParentheses("(a + b]"));         // false
 console.log(isBalancedParentheses("(a + [b - c)]"));   // false
 console.log(isBalancedParentheses("a + b"));           // true (no parentheses)
 
+const compose = (...fns) => (input) => fns.reduceRight((acc, fn) => fn(acc), input);
+
+// Example Usage
+const multiplyBy2 = (x) => x * 2;
+const add3 = (x) => x + 3;
+
+const composition = compose(add3, multiplyBy2);
+
+console.log(composition(5)); // Output: 13 (5 * 2 + 3)
+
+const pipe = (...fns) => (input) => fns.reduce((acc, fn) => fn(acc), input);
+
+// Example Usage
+const multiplyBy2 = (x) => x * 2;
+const add3 = (x) => x + 3;
+
+const pipeline = pipe(multiplyBy2, add3);
+
+console.log(pipeline(5)); // Output: 13 (5 * 2 + 3)
+
+// Example Usage
+const multiplyBy2 = (x) => x * 2;
+const add3 = (x) => x + 3;
+
+const pipeline = pipe(multiplyBy2, add3);
+
+console.log(pipeline(5)); // Output: 13 (5 * 2 + 3)
+
+
