@@ -1,0 +1,712 @@
+Boolean, String, Number
+let isDone: boolean = true;
+let name: string = "Alice";
+let age: number = 30;
+2. Arrays
+let numbers: number[] = [1, 2, 3];
+let names: string[] = ["Alice", "Bob"];
+let mixed: Array<number | string> = [1, "two"];
+4. Functions
+function greet(name: string): string {
+  return `Hello, ${name}`;
+}
+const add = (a: number, b: number): number => a + b;
+function multiply(a: number, b: number = 2): number {
+  return a * b;
+}
+let person: { name: string; age: number } = { name: "Alice", age: 25 };
+Type Alias
+type User = { name: string; age: number };
+let user: User = { name: "Bob", age: 30 };
+Narrowing (Checking types at runtime)
+function printId(id: number | string) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log(id.toFixed(2));
+  }
+}
+Interface
+interface Car {
+  brand: string;
+  speed: number;
+}
+let car: Car = { brand: "Toyota", speed: 120 };
+Implements (For Classes)
+interface Animal {
+  name: string;
+  makeSound(): void;
+}
+
+class Dog implements Animal {
+  name = "Dog";
+  makeSound() {
+    console.log("Woof!");
+  }
+}
+interface Animal {
+  name: string;
+}
+
+interface Dog extends Animal {
+  breed: string;
+}
+
+let pet: Dog = { name: "Buddy", breed: "Labrador" };
+let value: unknown;
+value = "Hello";
+if (typeof value === "string") {
+  console.log(value.length); // Safe
+}
+function throwError(): never {
+  throw new Error("Something went wrong!");
+}
+Tuples (Fixed-length arrays with specific types)
+let user: [string, number] = ["Alice", 25];
+Generics (Reusable types)
+function identity<T>(value: T): T {
+  return value;
+}
+console.log(identity<string>("Hello")); // "Hello"
+console.log(identity<number>(42)); // 42
+18. Readonly (Prevent modification)
+type User = { readonly id: number; name: string };
+const user: User = { id: 1, name: "Alice" };
+user.id = 2; // ❌ Error: Cannot assign to 'id'
+// Type Alias
+type UserType = { name: string; age: number };
+const user1: UserType = { name: "Alice", age: 25 };
+
+type does not support extends, but you can use intersection (&).
+type Person = { name: string };
+type Employee = Person & { id: number };
+
+const emp: Employee = { name: "John", id: 101 };
+ 
+interface Animal {
+  name: string;
+  makeSound(): void;
+}
+
+class Dog implements Animal {
+  name = "Buddy";
+  makeSound() {
+    console.log("Woof!");
+  }
+}
+class Animal {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Dog extends Animal {
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+const myDog = new Dog("Charlie");
+console.log(myDog.name); // "Charlie"
+myDog.bark(); // "Woof!"
+ 
+5. What are intersection (&) and union (|) types in TypeScript?
+type Status = "success" | "error";
+let res: Status = "success"; // ✅ Valid
+res = "error"; // ✅ Valid
+res = "pending"; // ❌ Error
+type Person = { name: string };
+type Employee = { id: number };
+
+type Worker = Person & Employee;
+
+const worker: Worker = { name: "Alice", id: 101 };
+Generics allow us to write reusable code that works with different types.
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+console.log(identity<string>("Hello")); // "Hello"
+console.log(identity<number>(42)); // 42
+Generics allow flexibility while maintaining type safety.
+How do you use Generics in Interfaces?
+interface Box<T> {
+  value: T;
+}
+
+const numberBox: Box<number> = { value: 100 };
+const stringBox: Box<string> = { value: "Hello" };
+Example: Omit and Pick
+type User = { id: number; name: string; age: number };
+
+// Pick only `name`
+type NameOnly = Pick<User, "name">;
+// Omit `age`
+type UserWithoutAge = Omit<User, "age">;
+10. How do you use keyof with Generics?
+keyof extracts keys from a type.
+type User = { id: number; name: string };
+type UserKeys = keyof User; // "id" | "name"
+
+function getUserProperty<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+
+const user: User = { id: 1, name: "Alice" };
+console.log(getUserProperty(user, "name")); // "Alice"
+Useful for working with object keys dynamically.
+12. What is the purpose of never type?
+function throwError(): never {
+  throw new Error("Something went wrong!");
+}
+
+2. Union Type for Form Inputs
+type InputValue = string | number | boolean;
+
+function handleInputChange(value: InputValue) {
+  if (typeof value === "string") {
+    console.log(`String input: ${value.toUpperCase()}`);
+  } else if (typeof value === "number") {
+    console.log(`Number input: ${value.toFixed(2)}`);
+  } else {
+    console.log(`Checkbox is ${value ? "checked" : "unchecked"}`);
+  }
+}
+
+handleInputChange("hello");
+handleInputChange(42);
+handleInputChange(true);
+3. Intersection for Combining User Roles
+type User = { id: number; name: string };
+type Admin = { adminLevel: string };
+type SuperUser = User & Admin;
+
+const superUser: SuperUser = { id: 1, name: "Alice", adminLevel: "Super" };
+4. Generics for Reusable Components
+function getFirstElement<T>(arr: T[]): T {
+  return arr[0];
+}
+
+console.log(getFirstElement<number>([1, 2, 3])); // 1
+console.log(getFirstElement<string>(["Alice", "Bob"])); // "Alice"
+Works with any type while maintaining type safety.
+keyof for Object Property Validation
+✅ Problem: Dynamically access object properties while keeping type safety.
+✅ Solution: Use keyof to extract valid keys.
+type User = { id: number; name: string; email: string };
+
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user: User = { id: 1, name: "Alice", email: "alice@example.com" };
+console.log(getProperty(user, "name")); // ✅ "Alice"
+// console.log(getProperty(user, "password")); // ❌ Error: Property does not exist
+TypeScript Interview – Mock Interview Questions with Code Examples
+Let's do a mock interview where I will ask real-world, scenario-based TypeScript questions just like an interviewer would. Each question will have a code example to explain the concept.
+________________________________________
+🟢 Basic Questions
+1. What is TypeScript, and how is it different from JavaScript?
+💬 Interviewer: Can you briefly explain what TypeScript is and how it differs from JavaScript?
+✅ Expected Answer:
+TypeScript is a superset of JavaScript that adds static typing, interfaces, generics, and decorators. It compiles to JavaScript and helps catch errors during development.
+Example Code:
+// TypeScript (Strongly Typed)
+let name: string = "Alice";
+name = 42; // ❌ Error: Type 'number' is not assignable to type 'string'.
+
+// JavaScript (Loosely Typed)
+let jsName = "Alice";
+jsName = 42; // ✅ No error in JS, but this could cause runtime bugs.
+________________________________________
+2. What are the different types in TypeScript?
+💬 Interviewer: What are the different built-in types available in TypeScript?
+✅ Expected Answer:
+TypeScript supports primitive and reference types:
+•	Primitive: string, number, boolean, null, undefined, symbol, bigint
+•	Reference: arrays, objects, functions, classes, interfaces, etc.
+Example Code:
+// Primitive types
+let isActive: boolean = true;
+let score: number = 100;
+let username: string = "John";
+
+// Reference types
+let numbers: number[] = [1, 2, 3];
+let person: { name: string; age: number } = { name: "Alice", age: 25 };
+________________________________________
+🟡 Intermediate Questions
+3. What is the difference between type and interface in TypeScript?
+💬 Interviewer: When would you use type vs interface in TypeScript?
+✅ Expected Answer:
+•	interface is mainly used to define object shapes and can be extended (extends).
+•	type is more flexible, supporting union types (|) and intersection types (&) but cannot be extended like interfaces.
+Example Code:
+// Using interface (Extensible)
+interface User {
+  name: string;
+  age: number;
+}
+interface Employee extends User {
+  role: string;
+}
+
+// Using type (More Flexible)
+type ID = number | string; // Union type
+type Person = { name: string; age: number };
+type Worker = Person & { jobTitle: string }; // Intersection type
+________________________________________
+4. What is the difference between extends and implements?
+💬 Interviewer: How do extends and implements work in TypeScript?
+✅ Expected Answer:
+•	extends is used for class inheritance (inherits properties and methods).
+•	implements is used when a class must follow an interface structure but does not inherit logic.
+Example Code:
+// Extends (Inheritance)
+class Animal {
+  move() {
+    console.log("Moving...");
+  }
+}
+class Dog extends Animal {
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+// Implements (Follows contract)
+interface Printable {
+  print(): void;
+}
+class Document implements Printable {
+  print() {
+    console.log("Printing document...");
+  }
+}
+________________________________________
+5. What are Union and Intersection types in TypeScript?
+💬 Interviewer: What are union and intersection types? Give an example.
+✅ Expected Answer:
+•	Union (|) allows a value to be one of multiple types.
+•	Intersection (&) combines multiple types into one.
+Example Code:
+// Union Type (Either string or number)
+type ID = string | number;
+let userID: ID = 42;
+userID = "abc123"; // ✅ Valid
+
+// Intersection Type (Combines two types)
+type User = { name: string };
+type Employee = { role: string };
+type Worker = User & Employee;
+
+const worker: Worker = { name: "Alice", role: "Developer" };
+________________________________________
+🟠 Advanced Questions
+6. How do Generics work in TypeScript?
+💬 Interviewer: What are Generics in TypeScript, and why do we use them?
+✅ Expected Answer:
+Generics allow creating reusable components that work with different types.
+Example Code:
+// Generic Function
+function identity<T>(arg: T): T {
+  return arg;
+}
+console.log(identity<string>("Hello")); // "Hello"
+console.log(identity<number>(42)); // 42
+
+// Generic Interface
+interface Box<T> {
+  value: T;
+}
+const stringBox: Box<string> = { value: "Apple" };
+const numberBox: Box<number> = { value: 100 };
+________________________________________
+7. What is the never type in TypeScript?
+💬 Interviewer: When would you use the never type?
+✅ Expected Answer:
+never is used when a function never returns (e.g., infinite loops, errors).
+Example Code:
+function throwError(): never {
+  throw new Error("Something went wrong!");
+}
+________________________________________
+🟣 Expert-Level Questions
+8. What is the purpose of unknown type?
+💬 Interviewer: What is the difference between any and unknown?
+✅ Expected Answer:
+•	any allows anything (unsafe).
+•	unknown requires type checking before use (safer).
+Example Code:
+let value: unknown = "Hello";
+if (typeof value === "string") {
+  console.log(value.toUpperCase()); // ✅ Allowed after type check
+}
+________________________________________
+7. What are Utility Types in TypeScript?
+💬 Interviewer: Can you explain some common TypeScript utility types like Partial, Omit, Pick, and Readonly?
+✅ Expected Answer:
+Utility types modify existing types.
+type User = { id: number; name: string; age: number };
+
+// Make all properties optional
+type PartialUser = Partial<User>;
+
+// Remove `age` property
+type UserWithoutAge = Omit<User, "age">;
+
+// Pick only `name` property
+type UserNameOnly = Pick<User, "name">;
+
+// Make all properties readonly
+type ReadonlyUser = Readonly<User>;
+8. How does keyof work in TypeScript?
+💬 Interviewer: What does keyof do in TypeScript, and how is it useful?
+✅ Expected Answer:
+keyof extracts keys of an object type.
+type User = { id: number; name: string };
+type UserKeys = keyof User; // "id" | "name"
+
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+const user: User = { id: 1, name: "Alice" };
+console.log(getProperty(user, "name")); // ✅ "Alice"
+
+ 
+Jest Interview Questions and Answers with Mock API and Important Methods
+This document covers essential Jest interview questions with answers and code examples focused on mock APIs (fetch, axios), setTimeout, describe, it, test, toEqual, toBe, and other important Jest methods.
+________________________________________
+🟢 Basic Questions
+1. What is Jest, and why is it used?
+💬 Interviewer: Can you explain what Jest is and why it's useful for testing?
+✅ Expected Answer:
+Jest is a JavaScript testing framework developed by Facebook, commonly used for testing React applications. It provides built-in features like test runners, assertions, spies, mocks, and snapshot testing without requiring additional configurations.
+Example Code:
+// Example Jest test for a function
+function add(a, b) {
+  return a + b;
+}
+
+module.exports = add;
+// Jest test file: add.test.js
+const add = require('./add');
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(add(1, 2)).toBe(3);
+});
+________________________________________
+2. How do you structure a Jest test using describe, it, and test?
+💬 Interviewer: What are describe, it, and test in Jest, and how are they used?
+✅ Expected Answer:
+•	describe() groups related tests together.
+•	test() and it() define individual test cases (they are interchangeable).
+Example Code:
+describe('Math Operations', () => {
+  test('addition works correctly', () => {
+    expect(2 + 3).toBe(5);
+  });
+  
+  it('subtraction works correctly', () => {
+    expect(5 - 2).toBe(3);
+  });
+});
+________________________________________
+🟡 Mock API & Async Testing
+3. How do you mock API calls using Jest with fetch and axios?
+💬 Interviewer: How can you test functions that make network requests?
+✅ Expected Answer:
+Use Jest’s built-in jest.mock() or jest.fn() to mock API calls.
+Example Code (Mocking fetch)
+// fetchData.js
+export const fetchData = async () => {
+  const response = await fetch('https://api.example.com/data');
+  return response.json();
+};
+// fetchData.test.js
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({ data: 'mocked data' })
+  })
+);
+
+test('fetchData returns mocked data', async () => {
+  const { fetchData } = require('./fetchData');
+  const data = await fetchData();
+  expect(data).toEqual({ data: 'mocked data' });
+});
+Example Code (Mocking axios)
+import axios from 'axios';
+jest.mock('axios');
+
+test('fetches data using axios', async () => {
+  axios.get.mockResolvedValue({ data: { name: 'Alice' } });
+
+  const response = await axios.get('https://api.example.com/user');
+  expect(response.data).toEqual({ name: 'Alice' });
+});
+________________________________________
+🟠 Handling Asynchronous Code
+4. How do you test setTimeout or delayed functions?
+💬 Interviewer: How can you test functions that run after a delay?
+✅ Expected Answer:
+Use jest.useFakeTimers() to mock time-based functions.
+Example Code:
+function delayedFunction(callback) {
+  setTimeout(() => {
+    callback('Done!');
+  }, 2000);
+}
+
+// Jest test
+jest.useFakeTimers();
+test('delayedFunction calls callback after timeout', () => {
+  const callback = jest.fn();
+  delayedFunction(callback);
+  jest.runAllTimers();
+  expect(callback).toHaveBeenCalledWith('Done!');
+});
+________________________________________
+🟣 Important Jest Matchers
+5. What are commonly used Jest matchers?
+💬 Interviewer: Can you explain the difference between toBe, toEqual, toContain, and toHaveBeenCalled?
+✅ Expected Answer:
+•	toBe(value): Checks exact equality (primitives).
+•	toEqual(value): Deep equality check (objects, arrays).
+•	toContain(value): Checks if an array contains an element.
+•	toHaveBeenCalled(): Ensures a mock function was called.
+Example Code:
+test('Matchers in Jest', () => {
+  expect(3).toBe(3); // Exact match
+  expect({ name: 'Alice' }).toEqual({ name: 'Alice' }); // Object match
+  expect([1, 2, 3]).toContain(2); // Array contains
+});
+
+const mockFn = jest.fn();
+mockFn();
+test('Mock function is called', () => {
+  expect(mockFn).toHaveBeenCalled();
+});
+________________________________________
+🔵 Snapshot Testing
+6. What is snapshot testing in Jest?
+💬 Interviewer: How does snapshot testing work in Jest?
+✅ Expected Answer:
+Snapshot testing compares the rendered output of a component with a stored reference snapshot.
+Example Code:
+import { render } from '@testing-library/react';
+import Header from './Header';
+
+test('renders correctly', () => {
+  const { asFragment } = render(<Header title="My App" />);
+  expect(asFragment()).toMatchSnapshot();
+});
+
+
+
+const userReducer = (state = { name: "Alice", age: 25 }, action) => {
+  if (action.type === "UPDATE_AGE") {
+    state.age = action.payload; // ❌ Direct mutation
+    return state; // ❌ Same reference
+  }
+  return state;
+};
+const userReducer = (state = { name: "Alice", age: 25 }, action) => {
+  if (action.type === "UPDATE_AGE") {
+    return { ...state, age: action.payload }; // ✅ Creates a new object
+  }
+  return state;
+};
+
+useReducer is an alternative to useState for complex state logic.
+
+// This is mutation --state.count = state.count + action.payload; // ❌  Direct mutation 
+// This is creating a new object return { count: state.count + action.payload }; // ✅ New object creation
+Correct Way (Creating a New Object):
+const updateUser = () => {
+  setUser(prevUser => ({
+    ...prevUser, // Creates a new object
+    name: "Bob", // Update name
+    address: {
+      ...prevUser.address, // Spread previous address to retain other fields
+      city: "Los Angeles", // Update city
+    },
+  }));
+};
+•  This creates a new object reference for both the top-level state (user) and the nested objects (like address).
+•  React detects this change and triggers a re-render.
+
+const addItem = () => {
+  // Directly modifying nested array
+  user.address.items.push("Item 3"); // ❌ Direct mutation
+  setUser(user); // ❌ React does not detect the change
+};
+•	Directly modifying the array does not trigger re-render because React compares references, and the array reference remains the same.
+
+
+const addItem = () => {
+  setUser(prevUser => ({
+    ...prevUser,
+    address: {
+      ...prevUser.address,
+      items: [...prevUser.address.items, "Item 3"], // Creates a new array
+    },
+  }));
+};
+•  New array reference is created ([...prevUser.address.items, "Item 3"]), and React can detect this change.
+•  React will re-render the component with the updated state.
+4. Best Practices for Modifying Deeply Nested State
+1.	Use the spread operator (...) to create new references for objects and arrays.
+2.	For nested objects, spread the parent object first and then spread the nested objects.
+3.	For nested arrays, use array methods like .map(), .filter(), or spread operator ([...array]) to create new arrays.
+4.	Avoid direct mutation of state (e.g., state.push(), state.name = 'newName').
+import React, { useState } from "react";
+
+function UserProfile() {
+  const [user, setUser] = useState({
+    name: "Alice",
+    address: {
+      city: "New York",
+      street: "5th Ave",
+      items: ["Item 1", "Item 2"],
+    },
+  });
+
+  const updateCity = () => {
+    setUser(prevUser => ({
+      ...prevUser,
+      address: {
+        ...prevUser.address,
+        city: "Los Angeles", // New value for city
+      },
+    }));
+  };
+
+  const addItem = () => {
+    setUser(prevUser => ({
+      ...prevUser,
+      address: {
+        ...prevUser.address,
+        items: [...prevUser.address.items, "Item 3"], // Add new item to array
+      },
+    }));
+  };
+
+  return (
+    <div>
+      <p>{user.name}</p>
+      <p>{user.address.city}</p>
+      <button onClick={updateCity}>Update City</button>
+      <ul>
+        {user.address.items.map(item => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      <button onClick={addItem}>Add Item</button>
+    </div>
+  );
+}
+
+export default UserProfile;
+1. Immutability in React
+Immutability means that state (or props) should never be modified directly. Instead, when you want to change state, you should create a new copy of the state with the updated values. This helps React efficiently detect changes and trigger re-renders when necessary.
+Why Is Immutability Important in React?
+React relies on shallow comparison to detect if the state or props have changed, which would trigger a re-render. If the state or props are mutated directly (not following immutability), React will not detect the change, causing the UI to not update correctly.
+For example:
+•	If you modify an array or object directly (without creating a new reference), React will not detect the change because the reference (memory address) of the object/array hasn't changed.
+2. Shallow Comparison in React
+Shallow comparison is how React compares the old state/props with the new state/props to decide if it needs to re-render the component.
+Shallow comparison means that React only checks if the top-level references have changed. It does not deeply compare nested objects or arrays.
+•	For primitive types (e.g., strings, numbers, booleans): React compares the values.
+•	For objects or arrays: React compares the references to see if they point to the same memory address.
+const [user, setUser] = useState({ name: "Alice", age: 25 });
+const updateName = () => {
+  setUser({ ...user, name: "Bob" }); // New reference
+};
+3. Why Shallow Comparison Works Efficiently
+Shallow comparison is faster because it only compares references at the top level, not deeply traversing through nested properties or arrays. This makes React more efficient in detecting changes and minimizing unnecessary renders.
+import React, { useState } from "react";
+
+function UserProfile() {
+  const [user, setUser] = useState({
+    name: "Alice",
+    age: 25,
+    address: { city: "New York", street: "5th Ave" },
+  });
+
+  const updateName = () => {
+    setUser({ ...user, name: "Bob" }); // Creates a new reference for user
+  };
+
+  const updateCity = () => {
+    user.address.city = "Los Angeles"; // Mutates state directly
+    setUser(user); // React won't trigger re-render
+  };
+
+  return (
+    <div>
+      <p>Name: {user.name}</p>
+      <p>City: {user.address.city}</p>
+      <button onClick={updateName}>Change Name</button>
+      <button onClick={updateCity}>Change City (Wrong)</button>
+    </div>
+  );
+}
+
+export default UserProfile;
+•  When you click "Change Name", React creates a new object with the updated name and triggers a re-render.
+•  When you click "Change City", React does not detect the change because the top-level user reference is unchanged (even though the city inside address is modified).
+Summary of Shallow Comparison & Immutability in React
+1.	Immutability: React requires state and props to be immutable. Instead of modifying objects or arrays directly, always create a new reference with the updated values.
+2.	Shallow Comparison: React uses shallow comparison to check if the top-level reference has changed. It does not deeply compare nested objects or arrays.
+Best Practices:
+•	Always create new objects or arrays when updating state or props.
+•	Use the spread operator (...) or methods like .map(), .filter(), and .concat() to create new references.
+•	For nested objects, make sure to create new references for each nested level.
+•	when you shallow copy an object in JavaScript using the spread operator (...) or Object.assign(), the reference to the object changes, meaning it will point to a different memory location. However, this is only for the top-level object. For nested objects or arrays inside the original object, the references to those nested structures remain the same (i.e., they are not deeply copied).
+•	Shallow Copy and Reference Change
+•	When you create a shallow copy of an object, you are creating a new object with the same top-level properties. However, the nested properties (like arrays or other objects) inside the original object still reference the same memory locations.
+const original = {
+  name: "Alice",
+  address: {
+    city: "New York",
+    zip: "10001"
+  }
+};
+const copy = { ...original };
+What Happens?
+•	Top-level original and copy objects are now different references (i.e., they point to different memory locations).
+•	Nested address object is still shared between the original and the copy because it wasn’t deeply copied.
+So if you modify the address property in either the original or the copied object, it will affect the other because they still share the same reference for the address object.
+const original = {
+  name: "Alice",
+  address: {
+    city: "New York",
+    zip: "10001"
+  }
+};
+
+const copy = { ...original };
+
+// Modify the address in the copy
+copy.address.city = "Los Angeles";
+
+console.log(original.address.city); // "Los Angeles" - Both `original` and `copy` share the same `address`
+console.log(copy.address.city); // "Los Angeles"
+In the above example:
+•	The top-level original and copy objects have different references (they are not the same object).
+•	The nested address object is shared by both original and copy, because it was shallow copied (not deeply copied).
+Deep vs Shallow Copy
+•	Shallow Copy: The top-level reference changes, but nested references stay the same.
+•	Deep Copy: Both top-level and nested objects/arrays are copied, meaning each level has its own new reference.
+const originalArray = [1, 2, [3, 4]];
+
+const copyArray = [...originalArray];
+
+console.log(originalArray === copyArray); // false (top-level references are different)
+console.log(originalArray[2] === copyArray[2]); // true (nested array references are the same)
+Summary of References in Shallow Copy
+•	Shallow copy ({...} or Object.assign()) changes the top-level reference but keeps the same reference for nested objects or arrays.
+•	Deep copy creates new references for both the top-level object and nested objects, ensuring that no shared references exist.
+
